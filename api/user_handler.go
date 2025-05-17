@@ -1,11 +1,8 @@
 package api
 
 import (
-	"context"
-
 	"github.com/gofiber/fiber/v2"
 	"github.com/sanket9162/hotel-reservation/db"
-	"github.com/sanket9162/hotel-reservation/types"
 )
 
 type UserHandler struct {
@@ -18,22 +15,22 @@ func NewUserHandler(userStore db.UserStore) *UserHandler {
 	}
 }
 
-func (h *UserHandler) HandleGetUsers(c *fiber.Ctx) error {
-	u := types.User{
-		FirstName: "sanket",
-		LastName:  "Gondhali",
-	}
-	return c.JSON(u)
-}
-
 func (h *UserHandler) HandleGetUser(c *fiber.Ctx) error {
 	var (
-		id  = c.Params("id")
-		ctx = context.Background()
+		id = c.Params("id")
 	)
-	user, err := h.userStore.GetUderById(ctx, id)
+	user, err := h.userStore.GetUserById(c.Context(), id)
 	if err != nil {
 		return err
 	}
 	return c.JSON(user)
+}
+
+func (h *UserHandler) HandleGetUsers(c *fiber.Ctx) error {
+	users, err := h.userStore.GetUsers(c.Context())
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(users)
 }
