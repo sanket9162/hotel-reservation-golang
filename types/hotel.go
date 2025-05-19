@@ -19,7 +19,7 @@ const (
 	DeluxeRoomType
 )
 
-type Rooms struct {
+type Room struct {
 	ID        primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
 	Type      RoomType           `bson:"type" json:"type"`
 	BasePrice float64            `bson:"basePrice" json:"basePrice"`
