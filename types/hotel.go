@@ -13,7 +13,7 @@ type RoomType int
 
 const (
 	_ RoomType = iota
-	SinglePersonRoomType
+	SingleRoomType
 	DouleRoomType
 	SeaSideRoomType
 	DeluxeRoomType
