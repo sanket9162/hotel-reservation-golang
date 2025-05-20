@@ -7,6 +7,7 @@ import (
 
 	"github.com/sanket9162/hotel-reservation/db"
 	"github.com/sanket9162/hotel-reservation/types"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -17,12 +18,13 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	hotelStore := db.NewMongoHotelStore(client, db.DBNAME)
-	roomStore := db.NewMongoRoomStore(client, db.DBNAME)
+	hotelStore := db.NewMongoHotelStore(client)
+	roomStore := db.NewMongoRoomStore(client, hotelStore)
 
 	hotel := types.Hotel{
 		Name:     "Bellucia",
 		Location: "India",
+		Rooms:    []primitive.ObjectID{},
 	}
 
 	rooms := []types.Room{
