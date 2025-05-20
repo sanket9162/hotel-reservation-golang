@@ -24,6 +24,7 @@ func main() {
 	hotel := types.Hotel{
 		Name:     "Bellucia",
 		Location: "India",
+		Rating:   3,
 		Rooms:    []primitive.ObjectID{},
 	}
 
