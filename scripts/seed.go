@@ -30,12 +30,12 @@ func main() {
 
 	rooms := []types.Room{
 		{
-			Type:      types.SingleRoomType,
-			BasePrice: 2500,
+			Size:  "small",
+			Price: 2500,
 		},
 		{
-			Type:      types.DeluxeRoomType,
-			BasePrice: 4500,
+			Size:  "normal",
+			Price: 4500,
 		},
 	}
 
