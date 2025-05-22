@@ -30,7 +30,7 @@ func NewMongoHotelStore(client *mongo.Client) *MongoHotelStore {
 
 func (s *MongoHotelStore) GetHotelsByID(ctx context.Context, id primitive.ObjectID) (*types.Hotel, error) {
 	var hotel types.Hotel
-	if err := s.coll.FindOne(ctx, bson.M{"_id:": id}).Decode(&hotel); err != nil {
+	if err := s.coll.FindOne(ctx, bson.M{"_id": id}).Decode(&hotel); err != nil {
 		return nil, err
 	}
 	return &hotel, nil
