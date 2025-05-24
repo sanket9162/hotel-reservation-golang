@@ -23,12 +23,17 @@ type AuthParams struct {
 }
 
 func (h *AuthHandler) HandleAuthenticate(c *fiber.Ctx) error {
-	var AuthParams AuthParams
-	if err := c.BodyParser(&AuthParams); err != nil {
+	var params AuthParams
+	if err := c.BodyParser(&params); err != nil {
 		return err
 	}
 
-	fmt.Println(AuthParams)
+	user, err := h.userStore.GetUserByEmail(c.Context(), params.Email)
+	if err != nil {
+		return err
+	}
+
+	fmt.Println(user)
 
 	return nil
 }
