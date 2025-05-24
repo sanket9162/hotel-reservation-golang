@@ -42,9 +42,14 @@ func main() {
 		userHandler  = api.NewUserHandler(UserStore)
 		hotelHandler = api.NewHotelHandler(store)
 		app          = fiber.New(config)
+		auth         = app.Group("/api")
 		apiv1        = app.Group("/api/v1", middleware.JWTAuthentication)
 	)
 
+	// auth
+	auth.Post("/auth", userHandler.HandleAuthenticate)
+
+	// Version API routes
 	//user handler
 	apiv1.Put("/user/:id", userHandler.HandlePutUser)
 	apiv1.Delete("/user/:id", userHandler.HandleDeleteUser)

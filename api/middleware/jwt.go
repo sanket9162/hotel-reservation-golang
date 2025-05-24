@@ -11,8 +11,8 @@ import (
 func JWTAuthentication(c *fiber.Ctx) error {
 	fmt.Println("---JWT auth")
 
-	token, ok := c.GetReqHeaders()["X-Api-Token"]
-	if !ok {
+	token := c.Get("X-Api-Token")
+	if token == "" {
 		return fmt.Errorf("unauthorized")
 	}
 
