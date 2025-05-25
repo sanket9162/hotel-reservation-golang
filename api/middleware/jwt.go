@@ -3,6 +3,7 @@ package middleware
 import (
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v5"
@@ -18,10 +19,12 @@ func JWTAuthentication(c *fiber.Ctx) error {
 	if err != nil {
 		return err
 	}
-
-	fmt.Println(claims)
-
-	return nil
+	expiresFloat := claims["expires"].(float64)
+	expires := int64(expiresFloat)
+	if time.Now().Unix() > expires {
+		return fmt.Errorf("token expired")
+	}
+	return c.Next()
 }
 
 func validateToke(tokenStr string) (jwt.MapClaims, error) {
