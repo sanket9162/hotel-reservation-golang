@@ -9,23 +9,22 @@ import (
 )
 
 func JWTAuthentication(c *fiber.Ctx) error {
-	fmt.Println("---JWT auth")
-
 	token := c.Get("X-Api-Token")
 	if token == "" {
 		return fmt.Errorf("unauthorized")
 	}
-
-	if err := parseToken(token); err != nil {
-		return nil
+	fmt.Println(token)
+	claims, err := validateToke(token)
+	if err != nil {
+		return err
 	}
 
-	fmt.Println("token:", token)
+	fmt.Println(claims)
 
 	return nil
 }
 
-func parseToken(tokenStr string) error {
+func validateToke(tokenStr string) (jwt.MapClaims, error) {
 	token, err := jwt.Parse(tokenStr, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			fmt.Println("invalid string method", token.Header["alg"])
@@ -36,11 +35,16 @@ func parseToken(tokenStr string) error {
 	})
 	if err != nil {
 		fmt.Println("failed to parse JWT token:", err)
-		fmt.Errorf("unauthorized")
+		return nil, fmt.Errorf("unauthorized")
+	}
+	if !token.Valid {
+		return nil, fmt.Errorf("unauthorized")
+
 	}
 
-	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		fmt.Println(claims)
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok {
+		return nil, fmt.Errorf("unauthorized")
 	}
-	return fmt.Errorf("unauthorized")
+	return claims, nil
 }
