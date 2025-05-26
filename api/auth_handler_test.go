@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"net/http/httptest"
 	"testing"
 
@@ -27,8 +28,12 @@ func TestAuthenticate(t *testing.T) {
 	req := httptest.NewRequest("POST", "/auth", bytes.NewReader(b))
 	resp, err := app.Test(req)
 	if err != nil {
-		t.Error(err)
+		t.Fatal(err)
 	}
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("expected http status of 200 but got %d", resp.StatusCode)
+	}
+
 	var authResp AuthResponse
 	if err := json.NewDecoder(resp.Body).Decode(&authResp); err != nil {
 		t.Error(err)
