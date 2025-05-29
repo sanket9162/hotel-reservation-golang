@@ -7,9 +7,10 @@ import (
 )
 
 type Booking struct {
-	ID       primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
-	UserID   primitive.ObjectID `bson:"userID,omitempty" json:"userID,omitempty"`
-	RoomID   primitive.ObjectID `bson:"roomID,omitempty" json:"roomID,omitempty"`
-	From     time.Time          `bson:"tillDate,omitempty" json:"tillDate, omitempty"`
-	TillDate time.Time          `bson:"tillDate,omitempty" json:"tillDate,omitempty"`
+	ID        primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
+	UserID    primitive.ObjectID `bson:"userID,omitempty" json:"userID,omitempty"`
+	RoomID    primitive.ObjectID `bson:"roomID,omitempty" json:"roomID,omitempty"`
+	NumPerson int                `bson:"numPerson,omitempty" json:"roomID,omitempty"`
+	FromDate  time.Time          `bson:"tillDate,omitempty" json:"tillDate, omitempty"`
+	TillDate  time.Time          `bson:"tillDate,omitempty" json:"tillDate,omitempty"`
 }
