@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
@@ -26,10 +27,21 @@ func NewRoomHandler(store *db.Store) *RoomHandler {
 	}
 }
 
+func (p BookRoomParams) validate() error {
+	now := time.Now()
+	if now.After(p.FromDate) || now.After(p.TillDate) {
+		return fmt.Errorf("cannot book a room in the past")
+	}
+	return nil
+}
+
 func (h *RoomHandler) HandleBookRoom(c *fiber.Ctx) error {
 	var params BookRoomParams
 	if err := c.BodyParser(&params); err != nil {
 		return err
+	}
+	if err := params.validate(); err != nil {
+		return nil
 	}
 	roomID, err := primitive.ObjectIDFromHex(c.Params("id"))
 	if err != nil {
