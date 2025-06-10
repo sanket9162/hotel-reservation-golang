@@ -54,7 +54,7 @@ func seedHotel(name, location string) {
 	}
 }
 
-func seedUser(c context.Context, fname, lname, email, password string) {
+func seedUser(c context.Context, isAdmin bool, fname, lname, email, password string) {
 	user, err := types.NewUserFromParams(types.CreateUserParams{
 		FirstName: fname,
 		LastName:  lname,
@@ -91,6 +91,8 @@ func main() {
 	seedHotel("Bellucia", "France")
 	seedHotel("The cozy hotel", "The Netherlands")
 	seedHotel("Die another day", "UK")
-	seedUser(context.Background(), "James", "Foo", "james@foo.com", "supersecurepassword")
+	seedUser(context.Background(), false, "James", "Foo", "james@foo.com", "supersecurepassword")
+	seedUser(context.Background(), true, "admin", "admin", "admin@admin.com", "sanket")
+
 	fmt.Println("seeded the db")
 }
