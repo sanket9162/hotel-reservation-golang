@@ -72,7 +72,7 @@ func (h *RoomHandler) HandleBookRoom(c *fiber.Ctx) error {
 	if !ok {
 		return c.Status(http.StatusBadRequest).JSON(genericResp{
 			Type: "error",
-			Msg:  fmt.Sprintln("room %s already booked", c.Params("id")),
+			Msg:  fmt.Sprintf("room %s already booked", c.Params("id")),
 		})
 	}
 

@@ -8,7 +8,6 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/sanket9162/hotel-reservation/api"
-	"github.com/sanket9162/hotel-reservation/api/middleware"
 	"github.com/sanket9162/hotel-reservation/db"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -19,7 +18,8 @@ var config = fiber.Config{
 		if apiError, ok := err.(api.Error); ok {
 			return c.Status(apiError.Code).JSON(apiError)
 		}
-		return api.NewError(http.StatusInternalServerError, err.Error())
+		apiError := api.NewError(http.StatusInternalServerError, err.Error())
+		return c.Status(apiError.Code).JSON(apiError)
 	},
 }
 
@@ -51,8 +51,8 @@ func main() {
 		bookingHandler = api.NewBookingHandler(store)
 		app            = fiber.New(config)
 		auth           = app.Group("/api")
-		apiv1          = app.Group("/api/v1", middleware.JWTAuthentication(UserStore))
-		admin          = apiv1.Group("/admin", middleware.AdminAuth)
+		apiv1          = app.Group("/api/v1", api.JWTAuthentication(UserStore))
+		admin          = apiv1.Group("/admin", api.AdminAuth)
 	)
 
 	// auth
