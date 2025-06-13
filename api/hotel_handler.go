@@ -21,12 +21,12 @@ func (h *HotelHandler) HotelGetRooms(c *fiber.Ctx) error {
 	id := c.Params("id")
 	oid, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
-		return err
+		return ErrInvalidID()
 	}
 	filter := bson.M{"hotelID": oid}
 	rooms, err := h.store.Room.GetRoooms(c.Context(), filter)
 	if err != nil {
-		return err
+		return ErrNotFount("hotel")
 	}
 	return c.JSON(rooms)
 }
@@ -39,7 +39,7 @@ func (h *HotelHandler) HandleGetHotel(c *fiber.Ctx) error {
 	}
 	hotel, err := h.store.Hotel.GetHotelsByID(c.Context(), oid)
 	if err != nil {
-		return err
+		return ErrNotFount("hotel")
 	}
 	return c.JSON(hotel)
 }
@@ -47,7 +47,7 @@ func (h *HotelHandler) HandleGetHotel(c *fiber.Ctx) error {
 func (h *HotelHandler) HandleGetHotels(c *fiber.Ctx) error {
 	hotels, err := h.store.Hotel.GetHotels(c.Context(), nil)
 	if err != nil {
-		return err
+		return ErrNotFount("hotel")
 	}
 	return c.JSON(hotels)
 }

@@ -25,9 +25,23 @@ func ErrUnAuthorized() Error {
 	}
 }
 
+func ErrBadRequest() Error {
+	return Error{
+		Code: http.StatusBadRequest,
+		Err:  "invalid JSON request",
+	}
+}
+
 func ErrInvalidID() Error {
 	return Error{
 		Code: http.StatusBadRequest,
 		Err:  "invalid id given",
+	}
+}
+
+func ErrNotFount(res string) Error {
+	return Error{
+		Code: http.StatusNotFound,
+		Err:  res + "Not Found",
 	}
 }
